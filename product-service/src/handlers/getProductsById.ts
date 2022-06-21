@@ -1,11 +1,11 @@
 import createResponse from 'helpers/createResponse';
-import productListJson from 'mock/productList.json';
+import { getProductById } from 'resources/product/product.service';
 
 const getProductsById = async (event: { pathParameters: { id: string }; }) => {
   const { id } = event.pathParameters;
 
   try {
-    const product = productListJson.find(p => p.id === id);
+    const product = await getProductById(id);
 
     if (!product) return createResponse(404, { message: 'Product not found' });
 

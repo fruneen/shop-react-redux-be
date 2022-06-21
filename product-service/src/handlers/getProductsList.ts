@@ -1,9 +1,11 @@
 import createResponse from 'helpers/createResponse';
-import productListJson from 'mock/productList.json';
+import { getProducts } from 'resources/product/product.service';
 
 const getProductsList = async () => {
   try {
-    return createResponse(200, productListJson);
+    const products = await getProducts();
+
+    return createResponse(200, products);
   } catch (error) {
     return createResponse(500, error);
   }
