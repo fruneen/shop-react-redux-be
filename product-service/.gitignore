@@ -4,5 +4,10 @@ jspm_packages
 .DS_Store
 .idea
 
+# env variables
+.env
+
 # Serverless directories
 .serverless
+
+.webpack

@@ -5,7 +5,7 @@ test('Get product by ID', async () => {
   const productId = '7567ec4b-b10c-48c5-9345-fc73c48a80aa';
   const product = productListJson.find(p => p.id === productId);
 
-  return expect(await handler.getProductsById({
+  return expect(await handler.getProductById({
     pathParameters: {
       id: productId,
     },
@@ -23,7 +23,7 @@ test('Get product by ID', async () => {
 test('Get non-existent product by ID', async () => {
   const productId = '7567ec4b-b10c-9345';
 
-  return expect(await handler.getProductsById({
+  return expect(await handler.getProductById({
     pathParameters: {
       id: productId,
     },

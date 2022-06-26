@@ -1,9 +1,14 @@
 import createResponse from 'helpers/createResponse';
-import { getProducts } from 'resources/product/product.service';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const getProductsList = async () => {
   try {
-    const products = await getProducts();
+    const products = await prisma.$queryRaw`
+      SELECT id, title, description, price, count FROM "Product" 
+      LEFT JOIN "Stock" ON "Product"."id" = "Stock"."productId"
+    `;
 
     return createResponse(200, products);
   } catch (error) {
