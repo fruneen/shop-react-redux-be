@@ -1,7 +1,7 @@
 import createResponse from 'helpers/createResponse';
 import s3Client from 'services/storage.service';
 
-const getProductById = async (event: { queryStringParameters: { name: string }; }) => {
+const importProducts = async (event: { queryStringParameters: { name: string }; }) => {
   try {
     const { name } = event.queryStringParameters;
 
@@ -10,7 +10,7 @@ const getProductById = async (event: { queryStringParameters: { name: string }; 
     }
 
     const signedUrl = await s3Client.getSignedUrlPromise('putObject', {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: 'node-in-aws-import-service',
       Key: `uploaded/${name}`,
       Expires: 60,
       ContentType: 'text/csv',
@@ -23,4 +23,4 @@ const getProductById = async (event: { queryStringParameters: { name: string }; 
   }
 };
 
-export default getProductById;
+export default importProducts;
