@@ -5,7 +5,7 @@ describe('Upload file to S3', () => {
   it('Get signed URL and upload file', async () => {
     const name = 'test-import-products.csv';
 
-    const response = await handler.importProducts({ queryStringParameters: { name } });
+    const response = await handler.importProductsFile({ queryStringParameters: { name } });
     const { signedUrl } = JSON.parse(response.body);
 
     expect(signedUrl).toBeDefined();
@@ -27,7 +27,7 @@ describe('Upload file to S3', () => {
   it('Get signed URL and upload file without name', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const response = await handler.importProducts({ queryStringParameters: {} });
+    const response = await handler.importProductsFile({ queryStringParameters: {} });
     const { error } = JSON.parse(response.body);
 
     expect(error).toBe('Name is required');

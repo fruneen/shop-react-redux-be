@@ -27,8 +27,8 @@ custom:
     includeModules: true
 
 functions:
-  importProducts:
-    handler: handler.importProducts
+  importProductsFile:
+    handler: handler.importProductsFile
     events:
      - httpApi:
          method: GET

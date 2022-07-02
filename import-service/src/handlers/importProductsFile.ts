@@ -1,13 +1,13 @@
 import createResponse from 'helpers/createResponse';
 import s3Client from 'services/storage.service';
 
-const importProducts = async (event: { queryStringParameters: { name: string }; }) => {
+const importProductsFile = async (event: { queryStringParameters: { name: string }; }) => {
   try {
-    const { name } = event.queryStringParameters;
-
-    if (!name) {
+    if (!event.queryStringParameters || !event.queryStringParameters.name) {
       return createResponse(400, { error: 'Name is required' });
     }
+
+    const { name } = event.queryStringParameters;
 
     const signedUrl = await s3Client.getSignedUrlPromise('putObject', {
       Bucket: 'node-in-aws-import-service',
@@ -23,4 +23,4 @@ const importProducts = async (event: { queryStringParameters: { name: string }; 
   }
 };
 
-export default importProducts;
+export default importProductsFile;
