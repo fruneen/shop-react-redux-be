@@ -16,12 +16,12 @@ const getProductsList = async (event: { body: any; }) => {
   console.log(body);
 
   try {
+    if (!body) return createResponse(400, { message: 'Bad request' });
+
     const { value: validatedData, error } = await schema.validate(body);
 
     if (error) return createResponse(400, error);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     return await prismaClient.$transaction(async (prisma) => {
       const createdProduct = await prisma.product.create({
         data: {
