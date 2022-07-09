@@ -7,6 +7,12 @@ provider:
   region: eu-central-1
   profile: default
 
+  environment:
+    SQS_URL:
+      Ref: catalogItemsQueue
+    SNS_ARN:
+      Ref: createProductTopic
+
   iamRoleStatements:
     - Effect: Allow
       Action: s3:ListBucket
@@ -17,6 +23,16 @@ provider:
         - s3:*
       Resource:
         - arn:aws:s3:::node-in-aws-import-service/*
+    - Effect: Allow
+      Action:
+        - sqs:*
+      Resource:
+        Fn::GetAtt: [ catalogItemsQueue, Arn ]
+    - Effect: Allow
+      Action:
+        - sns:*
+      Resource:
+        - arn:aws:sns:eu-central-1:688730865701:createProductTopic
 
 plugins:
   - serverless-webpack
@@ -25,6 +41,24 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+
+resources:
+  Resources:
+    catalogItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        Endpoint: fruneen@gmail.com
+        TopicArn:
+          Ref: createProductTopic
 
 functions:
   importProductsFile:
@@ -44,3 +78,13 @@ functions:
           rules:
             - prefix: uploaded/
           existing: true
+
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - catalogItemsQueue
+              - Arn
