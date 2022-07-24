@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-central-1
-  profile: default
+  profile: personal
 
   environment:
     SQS_URL:

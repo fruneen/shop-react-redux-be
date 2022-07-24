@@ -13,7 +13,6 @@ const prismaClient = new PrismaClient();
 
 const getProductsList = async (event: { body: any; }) => {
   const { body } = event;
-  console.log(body);
 
   try {
     if (!body) return createResponse(400, { message: 'Bad request' });

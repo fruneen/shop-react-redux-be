@@ -1,10 +1,14 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   entry: slsw.lib.entries,
+  plugins: [
+    new Dotenv(),
+  ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     modules: [
